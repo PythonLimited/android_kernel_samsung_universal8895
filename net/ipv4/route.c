@@ -519,7 +519,7 @@ static void __build_flow_key(const struct net *net, struct flowi4 *fl4,
 			   RT_SCOPE_UNIVERSE, prot,
 			   flow_flags,
 			   iph->daddr, iph->saddr, 0, 0,
-			   sock_net_uid(net, sk));
+			   sock_i_uid(sk));
 }
 
 static void build_skb_flow_key(struct flowi4 *fl4, const struct sk_buff *skb,
