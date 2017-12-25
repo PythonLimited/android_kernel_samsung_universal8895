@@ -134,6 +134,13 @@ struct extended_perms {
 };
 
 /* definitions of av_decision.flags */
+<<<<<<< HEAD
+=======
+// [ SEC_SELINUX_PORTING_COMMON
+#ifdef SELINUX_ALWAYS_ENFORCE
+#define AVD_FLAGS_PERMISSIVE	0x0000
+#else
+>>>>>>> 0b2c6c8... selinux: make permissive/enforcing controllable in defconfig
 #define AVD_FLAGS_PERMISSIVE	0x0001
 
 void security_compute_av(u32 ssid, u32 tsid,

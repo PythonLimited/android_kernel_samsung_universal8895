@@ -58,6 +58,14 @@ struct page *selinux_kernel_status_page(void)
 
 			status->version = SELINUX_KERNEL_STATUS_VERSION;
 			status->sequence = 0;
+<<<<<<< HEAD
+=======
+#if defined(SELINUX_ALWAYS_ENFORCE)
+			status->enforcing = 1;
+#elif defined(SELINUX_ALWAYS_PERMISSIVE)
+			status->enforcing = 0;
+#else
+>>>>>>> 0b2c6c8... selinux: make permissive/enforcing controllable in defconfig
 			status->enforcing = selinux_enforcing;
 			/*
 			 * NOTE: the next policyload event shall set

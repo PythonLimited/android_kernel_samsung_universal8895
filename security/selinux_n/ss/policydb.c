@@ -1504,6 +1504,13 @@ static int type_read(struct policydb *p, struct hashtab *h, void *fp)
 		goto bad;
 	return 0;
 bad:
+<<<<<<< HEAD
+=======
+// [ SEC_SELINUX_PORTING_COMMON
+#if !defined(SELINUX_ALWAYS_ENFORCE)
+	panic("SELinux:Failed to type read");
+#endif /*SELINUX_ALWAYS_ENFORCE*/
+>>>>>>> 0b2c6c8... selinux: make permissive/enforcing controllable in defconfig
 	type_destroy(key, typdatum, NULL);
 	return rc;
 }
@@ -2512,6 +2519,13 @@ int policydb_read(struct policydb *p, void *fp)
 out:
 	return rc;
 bad:
+<<<<<<< HEAD
+=======
+// [ SEC_SELINUX_PORTING_COMMON
+#if !defined(SELINUX_ALWAYS_ENFORCE)
+	panic("SELinux:Failed to load policy");
+#endif /*SELINUX_ALWAYS_ENFORCE*/
+>>>>>>> 0b2c6c8... selinux: make permissive/enforcing controllable in defconfig
 	policydb_destroy(p);
 	goto out;
 }

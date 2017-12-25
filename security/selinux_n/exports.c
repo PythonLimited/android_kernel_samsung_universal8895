@@ -18,6 +18,29 @@
 
 bool selinux_is_enabled(void)
 {
+<<<<<<< HEAD
+=======
+// [ SEC_SELINUX_PORTING_COMMON
+#if defined(SELINUX_ALWAYS_ENFORCE) || \
+	defined(SELINUX_ALWAYS_PERMISSIVE)
+	return true;
+#else
+>>>>>>> 0b2c6c8... selinux: make permissive/enforcing controllable in defconfig
 	return selinux_enabled;
 }
 EXPORT_SYMBOL_GPL(selinux_is_enabled);
+<<<<<<< HEAD
+=======
+
+bool selinux_is_enforcing(void)
+{
+#if defined(SELINUX_ALWAYS_ENFORCE)
+	return true;
+#elif defined(SELINUX_ALWAYS_PERMISSIVE)
+	return false;
+#else
+	return selinux_enforcing;
+#endif
+}
+EXPORT_SYMBOL_GPL(selinux_is_enforcing);
+>>>>>>> 0b2c6c8... selinux: make permissive/enforcing controllable in defconfig

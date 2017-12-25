@@ -237,7 +237,16 @@ void sel_netport_flush(void)
 static __init int sel_netport_init(void)
 {
 	int iter;
+<<<<<<< HEAD
 
+=======
+	
+// [ SEC_SELINUX_PORTING_COMMON
+#if defined(SELINUX_ALWAYS_ENFORCE) || \
+	defined(SELINUX_ALWAYS_PERMISSIVE)
+	selinux_enabled = 1;
+#endif
+>>>>>>> 0b2c6c8... selinux: make permissive/enforcing controllable in defconfig
 	if (!selinux_enabled)
 		return 0;
 
