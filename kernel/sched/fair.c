@@ -3122,7 +3122,8 @@ static inline void cfs_rq_util_change(struct cfs_rq *cfs_rq)
 } while (0)
 
 /* Group cfs_rq's load_avg is used for task_h_load and update_cfs_share */
-static inline int update_cfs_rq_load_avg(u64 now, struct cfs_rq *cfs_rq, bool update_freq)
+static inline int
+update_cfs_rq_load_avg(u64 now, struct cfs_rq *cfs_rq, bool update_freq)
 {
 	struct sched_avg *sa = &cfs_rq->avg;
 	int decayed, removed_load = 0, removed_util = 0;
@@ -3615,6 +3616,7 @@ dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
 	if (se != cfs_rq->curr)
 		__dequeue_entity(cfs_rq, se);
 	se->on_rq = 0;
+
 	account_entity_dequeue(cfs_rq, se);
 
 	/*
@@ -11332,6 +11334,7 @@ static int __init hmp_tbsoftlanding_init(void)
 }
 late_initcall(hmp_tbsoftlanding_init);
 #endif	/* CONFIG_SCHED_HMP_TASK_BASED_SOFTLANDING */
+
 
 
 

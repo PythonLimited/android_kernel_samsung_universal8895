@@ -44,12 +44,12 @@ struct crash_key user_crash_key_combination[] = {
 	{KEY_POWER, CRASH_COUNT_THIRD},
 };
 
-struct key_state {
+struct key_stated {
 	unsigned int key_code;
 	unsigned int state;
 };
 
-struct key_state key_states[] = {
+struct key_stated key_states[] = {
 	{KEY_VOLUMEDOWN, KEY_STATE_UP},
 	{KEY_VOLUMEUP, KEY_STATE_UP},
 	{KEY_POWER, KEY_STATE_UP},
@@ -230,3 +230,4 @@ void check_crash_keys_in_user(unsigned int code, int state)
 	}
 }
 EXPORT_SYMBOL(check_crash_keys_in_user)
+
