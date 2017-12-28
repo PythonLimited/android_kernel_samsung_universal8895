@@ -685,6 +685,8 @@ struct ufs_hba {
 	 * CAUTION: Enabling this might reduce overall UFS throughput.
 	 */
 #define UFSHCD_CAP_INTR_AGGR (1 << 4)
+	/* Allow only hibern8 without clk gating */
+#define UFSHCD_CAP_FAKE_CLK_GATING (1 << 5)
 	/*
 	 * This capability allows the device auto-bkops to be always enabled
 	 * except during suspend (both runtime and suspend).
@@ -697,10 +699,6 @@ struct ufs_hba {
 	struct devfreq *devfreq;
 	struct ufs_clk_scaling clk_scaling;
 	bool is_sys_suspended;
-
-	int			latency_hist_enabled;
-	struct io_latency_state io_lat_s;
-
 #if defined(CONFIG_FIPS_FMP)
 	struct buffer_head *self_test_bh;
 	uint32_t self_test_mode;
@@ -1031,3 +1029,4 @@ static ssize_t ufs_##name##_show (struct device *dev, struct device_attribute *a
 static DEVICE_ATTR(name, S_IRUGO, ufs_##name##_show, NULL)
 
 #endif /* End of Header */
+

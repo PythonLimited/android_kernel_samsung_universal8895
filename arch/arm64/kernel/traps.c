@@ -116,6 +116,17 @@ static void dump_backtrace_entry(unsigned long where)
 	print_ip_sym(where);
 }
 
+#ifdef CONFIG_SEC_DEBUG_AUTO_SUMMARY
+static void dump_backtrace_entry_auto_summary(unsigned long where)
+{
+	/*
+	 * Note that 'where' can have a physical address, but it's not handled.
+	 */
+	pr_auto(ASL2, "[<%p>] %pS\n", (void *)where, (void *)where);
+}
+#endif
+
+
 static void __dump_instr(const char *lvl, struct pt_regs *regs)
 {
 	unsigned long addr = instruction_pointer(regs);
@@ -684,3 +695,4 @@ void __init trap_init(void)
 {
 	register_break_hook(&bug_break_hook);
 }
+

@@ -1831,7 +1831,15 @@ static bool uuid_is_nonzero(__u8 u[16])
 
 static int f2fs_ioc_set_encryption_policy(struct file *filp, unsigned long arg)
 {
+#ifdef CONFIG_F2FS_FS_ENCRYPTION
+	struct f2fs_encryption_policy policy;
 	struct inode *inode = file_inode(filp);
+	int err;
+
+	if (copy_from_user(&policy, (struct f2fs_encryption_policy __user *)arg,
+				sizeof(policy)))
+		return -EFAULT;
+
 	err = mnt_want_write_file(filp);
 	if (err)
 		return err;
@@ -1852,7 +1860,22 @@ static int f2fs_ioc_set_encryption_policy(struct file *filp, unsigned long arg)
 
 static int f2fs_ioc_get_encryption_policy(struct file *filp, unsigned long arg)
 {
-	return fscrypt_ioctl_get_policy(filp, (void __user *)arg);
+#ifdef CONFIG_F2FS_FS_ENCRYPTION
+	struct f2fs_encryption_policy policy;
+	struct inode *inode = file_inode(filp);
+	int err;
+
+	err = f2fs_get_policy(inode, &policy);
+	if (err)
+		return err;
+
+	if (copy_to_user((struct f2fs_encryption_policy __user *)arg, &policy,
+							sizeof(policy)))
+		return -EFAULT;
+	return 0;
+#else
+	return -EOPNOTSUPP;
+#endif
 }
 
 static int f2fs_ioc_get_encryption_pwsalt(struct file *filp, unsigned long arg)
