@@ -7,8 +7,20 @@ BUILD_ROOT_DIR=$BUILD_KERNEL_DIR/..
 BUILD_KERNEL_OUT_DIR=$BUILD_ROOT_DIR/kernel_out/KERNEL_OBJ
 PRODUCT_OUT=$BUILD_ROOT_DIR/kernel_out
 
+export PATH=$PATH:/home/vaughn/android2/TOOLCHAIN/aarch64-android-linux-gnu/bin/
 export PATH=$PATH:/home/vaughn/android2/TOOLCHAIN/aarch64-linux-android/bin/
+#export PATH=$PATH:/home/vaughn/android2/TOOLCHAIN/clang-4053586/bin/
 export KERNEL_TOOLCHAIN=aarch64-linux-android-
+export BUILD_CROSS_COMPILE=aarch64-linux-android-
+
+CLANG_TOOLCHAIN_FOLDER=clang-4053586
+CLANG_TOOLCHAIN=/home/vaughn/android2/TOOLCHAIN/${CLANG_TOOLCHAIN_FOLDER}/bin/clang
+
+CLANG=clang
+CLANG_VERSION=$(${CLANG_TOOLCHAIN} --version | head -n 1) 
+GCC_TOOLCHAIN_CC=${GCC_TOOLCHAIN%gcc}
+GCC_TOOLCHAIN=$(find ${GCC_TOOLCHAIN_FOLDER}/bin -type f -name '*-gcc' | head -n1)
+export GCC_TOOLCHAIN_FOLDER=$PATH:/home/vaughn/android2/TOOLCHAIN/aarch64-linux-android
 
 BUILD_CROSS_COMPILE=$KERNEL_TOOLCHAIN
 BUILD_JOB_NUMBER=`grep processor /proc/cpuinfo|wc -l`
@@ -70,15 +82,12 @@ FUNC_BUILD_KERNEL()
 	rm $KERNEL_IMG $BUILD_KERNEL_OUT_DIR/arch/arm64/boot/Image
 	rm -rf $BUILD_KERNEL_OUT_DIR/arch/arm64/boot/dts
 
-if [ "$USE_CCACHE" ]
-then
 	make -C $BUILD_KERNEL_DIR O=$BUILD_KERNEL_OUT_DIR -j$BUILD_JOB_NUMBER ARCH=arm64 \
-			CROSS_COMPILE=$BUILD_CROSS_COMPILE \
-			CC="ccache "$BUILD_CROSS_COMPILE"gcc" CPP="ccache "$BUILD_CROSS_COMPILE"gcc -E" || exit -1
-else
-	make -C $BUILD_KERNEL_DIR O=$BUILD_KERNEL_OUT_DIR -j$BUILD_JOB_NUMBER ARCH=arm64 \
-			CROSS_COMPILE=$BUILD_CROSS_COMPILE || exit -1
-fi
+			CC=$CLANG \
+			CLANG_TRIPLE=aarch64-linux-gnu- \
+			COMPILER_NAME="${CLANG_VERSION}" \
+			CROSS_COMPILE=$GCC_TOOLCHAIN_CC \
+			HOSTCC=$CLANG || exit -1
 
 	cp $BUILD_KERNEL_OUT_DIR/arch/arm64/boot/Image $KERNEL_IMG
 	echo "Made Kernel image: $KERNEL_IMG"
