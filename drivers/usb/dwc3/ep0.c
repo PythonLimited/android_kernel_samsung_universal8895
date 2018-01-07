@@ -65,11 +65,6 @@ static void dwc3_ep0_prepare_one_trb(struct dwc3 *dwc, u8 epnum,
 
 	trb = &dwc->ep0_trb[dep->free_slot];
 
-	if (!trb) {
-		dev_err(dwc->dev, "trb is NULL\n");
-		return -EINVAL;
-	}
-
 	if (chain)
 		dep->free_slot++;
 
@@ -78,12 +73,6 @@ static void dwc3_ep0_prepare_one_trb(struct dwc3 *dwc, u8 epnum,
 	trb->size = len;
 	trb->ctrl = type;
 
-	if (trb->bpl == 0 && trb->bph == 0) {
-		dev_err(dwc->dev, "trb buffer addr is NULL\n");
-		trb->size = 0;
-		trb->ctrl = 0;
-		return -EINVAL;
-	}
 	trb->ctrl |= (DWC3_TRB_CTRL_HWO
 			| DWC3_TRB_CTRL_ISP_IMI);
 
@@ -93,7 +82,7 @@ static void dwc3_ep0_prepare_one_trb(struct dwc3 *dwc, u8 epnum,
 		trb->ctrl |= (DWC3_TRB_CTRL_IOC
 				| DWC3_TRB_CTRL_LST);
 
-	trace_dwc3_prepare_trb(dep, trb);
+trace_dwc3_prepare_trb(dep, trb);
 }
 
 static int dwc3_ep0_start_trans(struct dwc3 *dwc, u8 epnum)
