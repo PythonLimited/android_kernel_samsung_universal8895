@@ -5824,4 +5824,3 @@ device_initcall(binder_init);
 #include "binder_trace.h"
 
 MODULE_LICENSE("GPL v2");
-

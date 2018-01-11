@@ -308,4 +308,3 @@ void binder_selftest_alloc(struct binder_alloc *alloc)
 done:
 	mutex_unlock(&binder_selftest_lock);
 }
-
